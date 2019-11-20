@@ -20,6 +20,7 @@ def _serialize_vessel(dictionary: Dict) -> Vessel:
 
 class VesselsResult(Result):
     """Container class that holds the result obtained from calling the `Vessels` endpoint."""
+    DEFAULT_COLUMNS = ['id', 'name', 'imo', 'vessel_class']
 
     def to_list(self) -> List[Vessel]:
         """Represent vessels as a list."""
@@ -42,15 +43,7 @@ class VesselsResult(Result):
         `pd.DataFrame` of vessels.
 
         """
-        if columns is None:
-            columns = ['id', 'name', 'imo', 'vessel_class']
-
-        df = pd.DataFrame(super().to_list())
-
-        if columns == 'all':
-            return df
-        else:
-            return df[columns]
+        return super().to_df(columns=columns)
 
 
 class Vessels(Reference, Search):
