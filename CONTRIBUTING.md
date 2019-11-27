@@ -37,7 +37,7 @@ $ . venv/bin/activate
 
 install the required dependencies
 ```
-$ pip install -e .[tests]
+$ pip install -e '.[tests]'
 ```
 
 To run the live tests, you'll need to have the `VORTEXA_API_KEY` environment variable set.
@@ -52,6 +52,11 @@ serve documentation
 $ ./docs/serve_docs.sh
 ```
 …and view the docs at http://localhost:8000 in your web browser.
+
+Install the git [pre-commit-hooks](https://pre-commit.com/#3-install-the-git-hook-scripts)
+```bash
+$ pre-commit install
+```
 
 
 :tada: Now you're ready to create a new branch, add a feature or fix a bug, then send us a pull request! :tada:

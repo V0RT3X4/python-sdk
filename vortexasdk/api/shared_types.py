@@ -1,10 +1,18 @@
 from abc import ABC
 from dataclasses import dataclass
-from typing import List, Optional
+from datetime import datetime
+from typing import List, Optional, Union
 
 from vortexasdk.api.id import ID
 
+IDsNames = Union[List[Union[ID, str]], str, ID]
+
 ISODate = str
+
+
+# noinspection PyPep8Naming
+def to_ISODate(utc_datetime: datetime) -> str:
+    return utc_datetime.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
 
 
 @dataclass(frozen=True)
@@ -42,7 +50,7 @@ class IDLayer:
     """Tuple containing `id` and `layer`."""
 
     id: ID
-    name: str
+    layer: str
 
 
 @dataclass(frozen=True)

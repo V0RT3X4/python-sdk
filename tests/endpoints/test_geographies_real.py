@@ -1,19 +1,18 @@
-from unittest import TestCase, skipIf
-
-from tests.config import SKIP_TAGS
+from tests.testcases import TestCaseUsingRealAPI
+from tests.utils import to_markdown
 from vortexasdk import Geographies
-from vortexasdk.client import default_client, set_client
 
 
-@skipIf('real' in SKIP_TAGS, 'Skipping tests that hit the real API server.')
-class TestGeographiesReal(TestCase):
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        set_client(default_client())
-
+class TestGeographiesReal(TestCaseUsingRealAPI):
     def test_search(self):
         geographies = Geographies().search(term=["Liverpool", "Southampton"])
-        names = [g['name'] for g in geographies]
+        names = [g["name"] for g in geographies]
 
-        assert 'Liverpool [GB]' in names
+        assert "Liverpool [GB]" in names
+
+    def test_search_to_df(self):
+        geographies = (
+            Geographies().search(term=["Liverpool", "Southampton"]).to_df()
+        )
+
+        print(to_markdown(geographies))

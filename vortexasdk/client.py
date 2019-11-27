@@ -1,8 +1,8 @@
+import copy
 import functools
 import os
 from multiprocessing.pool import ThreadPool
 from typing import List
-import copy
 
 import requests
 from requests import Response
@@ -10,6 +10,9 @@ from requests import Response
 from vortexasdk.abstract_client import AbstractVortexaClient
 from vortexasdk.api.id import ID
 from vortexasdk.endpoints.endpoints import API_URL
+from vortexasdk.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class VortexaClient(AbstractVortexaClient):
@@ -22,9 +25,9 @@ class VortexaClient(AbstractVortexaClient):
 
     def get_reference(self, resource: str, id: ID) -> str:
         """Lookup reference data."""
-        url = self._create_url(f'{resource}/{id}')
+        url = self._create_url(f"{resource}/{id}")
         response = requests.get(url)
-        return _handle_response(response)['data']
+        return _handle_response(response)["data"]
 
     def search(self, resource: str, **data) -> List:
         """Search using `resource` using `**data` as filter params."""
@@ -32,34 +35,43 @@ class VortexaClient(AbstractVortexaClient):
 
         payload = {k: v for k, v in data.items() if v is not None}
 
-        total = _send_post_request(url, payload, size=1, offset=0)['total']
+        total = _send_post_request(url, payload, size=1, offset=0)["total"]
 
-        size = data.get('size', 1000)
+        size = data.get("size", 1000)
         offsets = [i for i in range(0, total, size)]
 
         n_threads = 4
         with ThreadPool(n_threads) as pool:
-            print(f'{total} Results to retreive.'
-                  f' Sending {len(offsets)}'
-                  f' post requests in parallel using {n_threads} threads.')
+            logger.debug(
+                f"{total} Results to retreive."
+                f" Sending {len(offsets)}"
+                f" post requests in parallel using {n_threads} threads."
+            )
 
-            responses = pool.map(functools.partial(_send_post_request_data, url=url, payload=payload, size=size),
-                                 offsets)
+            responses = pool.map(
+                functools.partial(
+                    _send_post_request_data,
+                    url=url,
+                    payload=payload,
+                    size=size,
+                ),
+                offsets,
+            )
 
-            flattened = [x for y in responses for x in y]
+        flattened = [x for y in responses for x in y]
 
-            return flattened
+        return flattened
 
     def _create_url(self, path: str) -> str:
-        return f'{API_URL}{path}?apikey={self.api_key}'
+        return f"{API_URL}{path}?apikey={self.api_key}"
 
 
 def _send_post_request_data(offset, url, payload, size):
-    return _send_post_request(url, payload, size, offset)['data']
+    return _send_post_request(url, payload, size, offset)["data"]
 
 
 def _send_post_request(url, payload, size, offset):
-    print(f'Sending post request, offset: {offset}, size: {size}')
+    logger.debug(f"Sending post request, offset: {offset}, size: {size}")
 
     payload_with_offset = copy.deepcopy(payload)
 
@@ -72,7 +84,9 @@ def _send_post_request(url, payload, size, offset):
 
     response = _handle_response(response, payload_with_offset)
 
-    print(f'Post request from offset {offset} received {len(response["data"])} items')
+    logger.debug(
+        f'Post request from offset {offset} received {len(response["data"])} items'
+    )
 
     return response
 
@@ -81,9 +95,9 @@ def _handle_response(response: Response, payload=None):
     if response.ok:
         return response.json()
     else:
-        print(response.reason)
-        print(response.json())
-        print(f'payload: {payload}')
+        logger.error(response.reason)
+        logger.error(response.json())
+        logger.error(f"payload: {payload}")
         raise Exception(response)
 
 
@@ -102,11 +116,13 @@ def default_client() -> VortexaClient:
 
 def create_client() -> VortexaClient:
     """Create new VortexaClient."""
-    print("Creating new VortexaClient")
+    logger.info("Creating new VortexaClient")
     try:
         api_key = os.environ["VORTEXA_API_KEY"]
     except KeyError:
-        raise KeyError("VORTEXA_API_KEY environment variable is required to use the VortexaSDK")
+        raise KeyError(
+            "VORTEXA_API_KEY environment variable is required to use the VortexaSDK"
+        )
     return VortexaClient(api_key=api_key)
 
 
@@ -114,4 +130,6 @@ def set_client(client) -> None:
     """Set the global client, used by all endpoints."""
     global __client__
     __client__ = client
-    print(f'global __client__ has been set {__client__.__class__.__name__} \n')
+    logger.debug(
+        f"global __client__ has been set {__client__.__class__.__name__} \n"
+    )

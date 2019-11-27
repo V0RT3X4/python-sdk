@@ -7,7 +7,7 @@ from vortexasdk.api.geography import GeographyEntity
 
 class TestGeographyEntity(TestCase):
     def test_serialize(self):
-        with open("tests/api/examples/geography_entity1.json", 'r') as f:
+        with open("tests/api/examples/geography_entity1.json", "r") as f:
             serialized = f.read()
             deserialized = jsons.loads(serialized, GeographyEntity)
 
@@ -19,7 +19,7 @@ class TestGeographyEntity(TestCase):
                 layer="country",
                 label="United Kingdom",
                 source="model",
-                probability=1
+                probability=1,
             )
 
             assert expected == deserialized

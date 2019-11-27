@@ -2,6 +2,9 @@ from typing import List
 
 from vortexasdk.api.id import ID
 from vortexasdk.client import default_client
+from vortexasdk.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class Reference:
@@ -32,6 +35,9 @@ class Reference:
             >>> Reference("/reference/geographies").reference(id='cfb8c4ef76585c3a37792b643791a0f4ff6d5656d5508927d8017319e21f2fca')
 
         """
+        logger.info(
+            f"Looking up {self.__class__.__name__} reference data with id: {id}"
+        )
         return default_client().get_reference(self._resource, id)
 
 
@@ -63,4 +69,7 @@ class Search:
             >>> Search("/reference/vessels").search(term="DHT")
 
         """
+        logger.info(
+            f"Searching {self.__class__.__name__} with params: {params}"
+        )
         return default_client().search(self._resource, **params)

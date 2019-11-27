@@ -3,17 +3,16 @@ from typing import List, Optional
 
 from vortexasdk.api.corporation import CorporateEntity
 from vortexasdk.api.id import ID
+from vortexasdk.api.serdes import FromDictMixin
 from vortexasdk.api.shared_types import IDName, ISODate, Node, Tag
 
 
-@dataclass(frozen=True, )
-class Vessel(Node):
+@dataclass(frozen=True,)
+class Vessel(Node, FromDictMixin):
     """
     Represent a Vessel reference record returned by the API.
 
-    # Further Documentation
-
-    https://docs.vortexa.com/reference/GET/reference/vessels/%7Bid%7D
+    [Vessels Further Documentation](https://docs.vortexa.com/reference/GET/reference/vessels/%7Bid%7D)
     """
 
     related_names: List[str]
@@ -39,11 +38,9 @@ class Vessel(Node):
 @dataclass(frozen=True)
 class VesselEntity(IDName):
     """
-
     A VesselEntity represents a vessel record used in CargoMovements and VesselMovements.
 
     [Vessel Entities Further Documentation](https://docs.vortexa.com/reference/intro-vessel-entities)
-
     """
 
     id: ID
@@ -58,7 +55,7 @@ class VesselEntity(IDName):
     tags: List[Tag]
     status: str
 
-    start_timestamp: ISODate
+    start_timestamp: Optional[ISODate] = None
 
     cubic_capacity: Optional[int] = None
     voyage_id: Optional[str] = None

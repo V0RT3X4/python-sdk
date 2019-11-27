@@ -1,2 +1,9 @@
 """Vortexa Python SDK."""
-from vortexasdk.endpoints import CargoMovements, Charterers, Geographies, Products, Vessels
+from vortexasdk.endpoints import (
+    CargoMovements,
+    Corporations,
+    Geographies,
+    Products,
+    VesselMovements,
+    Vessels,
+)

@@ -1,3 +1,3 @@
 import os
 
-SKIP_TAGS = os.getenv('SKIP_TAGS', '').split()
+SKIP_TAGS = os.getenv("SKIP_TAGS", "").split()

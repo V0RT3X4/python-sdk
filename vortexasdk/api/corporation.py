@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from typing import List
 
+from vortexasdk.api.serdes import FromDictMixin
 from vortexasdk.api.shared_types import IDName, EntityWithProbability
 
 
 @dataclass(frozen=True)
-class Corporation(IDName):
+class Corporation(IDName, FromDictMixin):
     """Represent a Corporation reference record returned by the API."""
 
     corporate_entity_type: List[str]

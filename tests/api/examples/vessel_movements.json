@@ -1,0 +1,242 @@
+[
+  {
+    "vessel_movement_id": "7e0fb931ec1117d102f957048a6cce473a7eaf3f2b95f6bccdcc7b50dc3d8ab7",
+    "start_timestamp": "2017-11-19T06:59:05+0000",
+    "end_timestamp": "2017-11-29T02:49:32+0000",
+    "voyage_id": "7a29c4880276cbbdfade2ec6a0ee2dbbebf9e41bb47b18657196fff7cd3dc32e",
+    "vessel": {
+      "id": "6d8a8f0863ca087204dd68e5fc3b6469a879829e6262856e34856aea3ca20509",
+      "mmsi": 248896000,
+      "imo": 9380893,
+      "name": "17 FEBRUARY",
+      "dwt": 160391,
+      "cubic_capacity": 172092,
+      "vessel_class": "suezmax",
+      "corporate_entities": [
+        {
+          "id": "19b1bf392f474ca942b7b25ddcba363638516b2e40268ea7a70888021575a4dd",
+          "layer": "charterer",
+          "probability": 1,
+          "source": "external",
+          "label": "VITOL"
+        },
+        {
+          "id": "01ec474e7324c7633ffaf2a5c92bb7348cc02adc4d10b85daa3dd2cc5458df59",
+          "label": "CORE PETROLEUM",
+          "layer": "commercial_owner",
+          "probability": 1,
+          "source": "external"
+        }
+      ],
+      "tags": [],
+      "status": "vessel_status_ballast"
+    },
+    "origin": {
+      "event_id": "5769995a932e152f9ded42706cebe90992ba6cc06208e32833d29ea91e37a68f",
+      "location": [
+        {
+          "id": "934c47f36c16a58d68ef5e007e62a23f5f036ee3f3d1f5f85a48c572b90ad8b2",
+          "layer": "country",
+          "probability": 1,
+          "source": "model",
+          "label": "China"
+        },
+        {
+          "id": "c901cc99a794afe1a7a9146c4573420e87c629717651c3a0d2ee3628cdaf0bc5",
+          "layer": "port",
+          "probability": 1,
+          "source": "model",
+          "label": "Bayuquan [CN]"
+        },
+        {
+          "id": "e6955a2c59dc90833986fe0894cf6718dddaa7816bb51bc955cdd3eb4470e554",
+          "layer": "region",
+          "probability": 1,
+          "source": "model",
+          "label": "Asia"
+        },
+        {
+          "id": "07ac020aa082d5d116f829ef28a40e9876c0644aeb4f0480202c1a86bb8adf7f",
+          "layer": "shipping_region",
+          "probability": 1,
+          "source": "model",
+          "label": "Far East"
+        },
+        {
+          "id": "2b394b41a7ff9e48b40b4ba8e6a6b045340261dfc02133d04af13fe754a71a48",
+          "layer": "shipping_region",
+          "probability": 1,
+          "source": "model",
+          "label": "East Asia"
+        },
+        {
+          "id": "a63890260e29d859390fd1a23c690181afd4bd152943a04c00cd6a5ecf3f7d1e",
+          "layer": "shipping_region",
+          "probability": 1,
+          "source": "model",
+          "label": "North China"
+        },
+        {
+          "id": "b5fafce6e20de2dc307fb7e0b89978ee91a49a7b6ec6f5461daf2633f3c56674",
+          "layer": "shipping_region",
+          "probability": 1,
+          "source": "model",
+          "label": "China (excl. HK & Macau)"
+        },
+        {
+          "id": "956b03529510459d298c4e537d23c6fbb22ffd8414af933b3475310c661f337a",
+          "layer": "trading_block",
+          "probability": 1,
+          "source": "model",
+          "label": "Non-OPEC"
+        },
+        {
+          "id": "2b394b41a7ff9e48b40b4ba8e6a6b045340261dfc02133d04af13fe754a71a48",
+          "layer": "trading_region",
+          "probability": 1,
+          "source": "model",
+          "label": "East Asia"
+        },
+        {
+          "id": "87f8d059ed2f57c1f54dd883cb0fc90f83633d736f763982f2503f6f803eb333",
+          "layer": "trading_subregion",
+          "probability": 1,
+          "source": "model",
+          "label": "Liaoning Province"
+        },
+        {
+          "id": "977573e3782428763edf580be53c73b7d04172037e6d6ba8282ea1de66dd36cb",
+          "layer": "terminal",
+          "probability": 1,
+          "source": "model",
+          "label": "Xianrendao Crude Oil Terminal"
+        }
+      ],
+      "pos": [
+        121.95271103090423,
+        40.20963715299812
+      ],
+      "start_timestamp": "2017-11-19T06:59:05+0000",
+      "end_timestamp": "2017-11-21T00:00:08+0000",
+      "event_type": "discharge"
+    },
+    "destination": {
+      "event_id": "487d3eba7cc29724ce6b8aca3822dfbe85eaa0a61500c3cd5fa5f705bf95c832",
+      "location": [
+        {
+          "id": "934c47f36c16a58d68ef5e007e62a23f5f036ee3f3d1f5f85a48c572b90ad8b2",
+          "layer": "country",
+          "probability": 1,
+          "source": "model",
+          "label": "China"
+        },
+        {
+          "id": "056054a06d321e21ac868558a099751b324b675e05c11df7c041c8ad0edf5445",
+          "layer": "port",
+          "probability": 1,
+          "source": "model",
+          "label": "Dalian [CN]"
+        },
+        {
+          "id": "e6955a2c59dc90833986fe0894cf6718dddaa7816bb51bc955cdd3eb4470e554",
+          "layer": "region",
+          "probability": 1,
+          "source": "model",
+          "label": "Asia"
+        },
+        {
+          "id": "07ac020aa082d5d116f829ef28a40e9876c0644aeb4f0480202c1a86bb8adf7f",
+          "layer": "shipping_region",
+          "probability": 1,
+          "source": "model",
+          "label": "Far East"
+        },
+        {
+          "id": "2b394b41a7ff9e48b40b4ba8e6a6b045340261dfc02133d04af13fe754a71a48",
+          "layer": "shipping_region",
+          "probability": 1,
+          "source": "model",
+          "label": "East Asia"
+        },
+        {
+          "id": "a63890260e29d859390fd1a23c690181afd4bd152943a04c00cd6a5ecf3f7d1e",
+          "layer": "shipping_region",
+          "probability": 1,
+          "source": "model",
+          "label": "North China"
+        },
+        {
+          "id": "b5fafce6e20de2dc307fb7e0b89978ee91a49a7b6ec6f5461daf2633f3c56674",
+          "layer": "shipping_region",
+          "probability": 1,
+          "source": "model",
+          "label": "China (excl. HK & Macau)"
+        },
+        {
+          "id": "956b03529510459d298c4e537d23c6fbb22ffd8414af933b3475310c661f337a",
+          "layer": "trading_block",
+          "probability": 1,
+          "source": "model",
+          "label": "Non-OPEC"
+        },
+        {
+          "id": "2b394b41a7ff9e48b40b4ba8e6a6b045340261dfc02133d04af13fe754a71a48",
+          "layer": "trading_region",
+          "probability": 1,
+          "source": "model",
+          "label": "East Asia"
+        },
+        {
+          "id": "87f8d059ed2f57c1f54dd883cb0fc90f83633d736f763982f2503f6f803eb333",
+          "layer": "trading_subregion",
+          "probability": 1,
+          "source": "model",
+          "label": "Liaoning Province"
+        },
+        {
+          "id": "e4694abfad48f9135cdd6634ebb0624c3a91097fc8e83b084747d5bdbd8c2c8e",
+          "layer": "terminal",
+          "probability": 1,
+          "source": "model",
+          "label": "Dalian Xingang Oil Terminal"
+        }
+      ],
+      "pos": [
+        121.9107237155891,
+        38.965178213026206
+      ],
+      "start_timestamp": "2017-11-27T06:39:50+0000",
+      "end_timestamp": "2017-11-29T02:49:32+0000",
+      "event_type": "discharge"
+    },
+    "cargoes": [
+      {
+        "cargo_movement_id": "12bd784781cc082d79b6d3c65089596c384da192af1548726efe204450cf9881",
+        "quantity": 290692,
+        "product": [
+          {
+            "id": "6f11b0724c9a4e85ffa7f1445bc768f054af755a090118dcf99f14745c261653",
+            "layer": "group",
+            "probability": 1,
+            "source": "external",
+            "label": "Crude"
+          },
+          {
+            "id": "6f11b0724c9a4e85ffa7f1445bc768f054af755a090118dcf99f14745c261653",
+            "layer": "group_product",
+            "probability": 1,
+            "source": "external",
+            "label": "Crude"
+          },
+          {
+            "id": "a7e26956fbb91d786b1d55582981b0d199f72c050958fd3501b3991d24efa2d2",
+            "layer": "category",
+            "probability": 1,
+            "source": "external",
+            "label": "Medium-Sour"
+          }
+        ]
+      }
+    ]
+  }
+]

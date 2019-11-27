@@ -1,17 +1,8 @@
-from unittest import TestCase
-from tests.mock_client import MockVortexaClient
-from vortexasdk.client import set_client
+from tests.testcases import TestCaseUsingMockAPI
 from vortexasdk.endpoints.products import Products
 
 
-class TestProducts(TestCase):
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        set_client(MockVortexaClient())
-
+class TestProducts(TestCaseUsingMockAPI):
     def test_search_ids_retreives_names(self):
         products = Products().search().to_df()
         assert len(products) > 0
-
-

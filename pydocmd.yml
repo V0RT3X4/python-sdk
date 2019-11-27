@@ -1,21 +1,24 @@
 site_name: VortexaSDK
 repo_url: https://github.com/V0RT3X4/python-sdk
 generate:
-  - operations.md:
-      - vortexasdk.operations.Search+
-      - vortexasdk.operations.Reference+
-
   - endpoints/cargo_movements.md:
       - vortexasdk.endpoints.cargo_movements++
-  - endpoints/charterers.md:
-      - vortexasdk.endpoints.charterers++
+      - vortexasdk.endpoints.cargo_movements_result++
+  - endpoints/vessel_movements.md:
+      - vortexasdk.endpoints.vessel_movements++
+      - vortexasdk.endpoints.vessel_movements_result++
+  - endpoints/corporations.md:
+      - vortexasdk.endpoints.corporations++
+      - vortexasdk.endpoints.corporations_result++
   - endpoints/vessels.md:
       - vortexasdk.endpoints.vessels++
+      - vortexasdk.endpoints.vessels_result++
   - endpoints/geographies.md:
       - vortexasdk.endpoints.geographies++
+      - vortexasdk.endpoints.geographies_result++
   - endpoints/products.md:
       - vortexasdk.endpoints.products++
-
+      - vortexasdk.endpoints.products_result++
   - entities/product.md:
       - vortexasdk.api.product++
   - entities/geography.md:
@@ -26,24 +29,28 @@ generate:
       - vortexasdk.api.vessel++
   - entities/cargo_movement.md:
       - vortexasdk.api.cargo_movement++
+  - entities/vessel_movement.md:
+      - vortexasdk.api.vessel_movement++
 pages:
   - Home: index.md << README.md
-  - Entities:
-      Vessel: entities/vessel.md
-      Product: entities/product.md
-      Geography: entities/geography.md
-      Corporation: entities/corporation.md
-      Cargo Movement: entities/cargo_movement.md
-  - Operations: operations.md
   - Endpoints:
-      Vessels: endpoints/vessels.md
-      Products: endpoints/products.md
-      Geographies: endpoints/geographies.md
+      About Endpoints: endpoints/about-endpoints.md << docs/endpoints/about-endpoints.md
       Cargo Movements: endpoints/cargo_movements.md
-      Charterers: endpoints/charterers.md
+      Vessel Movements: endpoints/vessel_movements.md
+      Corporations: endpoints/corporations.md
+      Geographies: endpoints/geographies.md
+      Products: endpoints/products.md
+      Vessels: endpoints/vessels.md
+  - Entities:
+      Cargo Movement: entities/cargo_movement.md
+      Corporation: entities/corporation.md
+      Geography: entities/geography.md
+      Product: entities/product.md
+      Vessel: entities/vessel.md
+      Vessel Movement: entities/vessel_movement.md
+  - Config: config.md << docs/config/config.md
   - Examples:
       1 China VLCC Discharges: examples/1_china.md
-
 theme:
   name: readthedocs
   collapse_navigation: true

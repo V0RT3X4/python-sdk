@@ -1,4 +1,9 @@
 repos:
+  - repo: https://github.com/ambv/black
+    rev: stable
+    hooks:
+      - id: black
+        language_version: python3.7
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v1.2.3
     hooks:
@@ -10,4 +15,6 @@ repos:
       - id: pydocstyle
         args:
           - --ignore=D107,D203,D212,D100
-        files: ^vortexasdk/
+        files:
+          ^vortexasdk/
+          ^docs/examples/

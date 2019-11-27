@@ -1,37 +1,12 @@
 """Products Endpoint."""
 from typing import List, Union
 
-import pandas as pd
-
-from vortexasdk.api.product import Product
-from vortexasdk.api.search_result import Result
 from vortexasdk.api.shared_types import ID
 from vortexasdk.endpoints.endpoints import PRODUCTS_REFERENCE
+from vortexasdk.endpoints.products_result import ProductResult
 from vortexasdk.operations import Reference, Search
-from vortexasdk.utils import convert_values_to_list
 
-
-class ProductResult(Result):
-    """Container class that holds the result obtained from calling the `Product` endpoint."""
-    DEFAULT_COLUMNS = ["id", "name", "parent"]
-
-    def to_list(self) -> List[Product]:
-        """Represent products as a list."""
-        return super().serialize_dataclass(List[Product])
-
-    def to_df(self, columns=None) -> pd.DataFrame:
-        """
-        Represent products as a `pd.DataFrame`.
-
-        # Arguments
-            columns: The product features we want in the dataframe. Enter `columns='all'` to include all features.
-            Defaults to `columns = ['id', 'name', 'parent']`.
-
-        # Returns
-        `pd.DataFrame` of products.
-
-        """
-        return super().to_df(columns=columns)
+from vortexasdk.utils import convert_to_list
 
 
 class Products(Reference, Search):
@@ -41,6 +16,57 @@ class Products(Reference, Search):
         """Instantiate endpoint using reference endpoint."""
         Reference.__init__(self, PRODUCTS_REFERENCE)
         Search.__init__(self, PRODUCTS_REFERENCE)
+
+    def search(
+        self,
+        term: Union[str, List[str]] = None,
+        ids: Union[str, List[str]] = None,
+        product_parent: Union[str, List[str]] = None,
+    ) -> ProductResult:
+        """
+        Find all products matching given search terms.
+
+        # Arguments
+            term: The name(s) (or partial name(s)) of a product we'd like to search
+
+            ids: ID or IDs of products we'd like to search
+
+            product_parent: ID, or list of IDs of the immediate product parent. E.g. `product_parent ='12345'` will return all children of product `12345`.
+
+        # Returns
+        List of products matching the search arguments.
+
+
+        # Examples
+
+        Let's look for products with in one of `['diesel', 'fuel oil', 'grane']` their name, or related names.
+
+        ```python
+        >>> from vortexasdk import Products
+        >>> Products().search(term=['diesel', 'fuel oil', 'grane']).to_df('all')
+        ```
+        Returns
+
+        |    | id                 | name          | layer.0   | leaf   | parent.0.name   | parent.0.layer.0   | parent.0.id       |   meta.api_min |   meta.api_max | ref_type   |   meta.sulphur_min |   meta.sulphur_max |
+        |---:|:-------------------|:--------------|:----------|:-------|:----------------|:-------------------|:------------------|---------------:|---------------:|:-----------|-------------------:|-------------------:|
+        |  0 | 1c107b4317bc2c8... | Fuel Oil      | category  | False  | Dirty products  | product            | 5de0b00094e0fd... |        12.8878 |        12.8878 | product    |             nan    |             nan    |
+        |  1 | fddedd17e02507f... | Grane         | grade     | True   | Medium-Sour     | subproduct_group   | a7e26956fbb917... |        29.2955 |        29.2955 | product    |               0.62 |               0.62 |
+        |  2 | deda35eb9ca56b5... | Diesel/Gasoil | category  | False  | Clean products  | product            | b68cbb7746f8b9... |        35.9556 |        35.9556 | product    |             nan    |             nan    |
+
+
+        # Further Documentation
+
+        [VortexaAPI Product Reference](https://docs.vortexa.com/reference/POST/reference/products)
+
+        """
+        search_params = {
+            "term": convert_to_list(term),
+            "ids": convert_to_list(ids),
+            "product_parent": convert_to_list(product_parent),
+            "allowTopLevelProducts": True,
+        }
+
+        return ProductResult(super().search(**search_params))
 
     def reference(self, id: ID):
         """
@@ -57,51 +83,3 @@ class Products(Reference, Search):
 
         """
         return super().reference(id)
-
-    def search(self,
-               term: Union[str, List[str]] = None,
-               ids: Union[str, List[str]] = None,
-               product_parent: Union[str, List[str]] = None,
-               ) -> ProductResult:
-        """
-        Find all products matching given search terms.
-
-        # Arguments
-            term: The name(s) (or partial name(s)) of a product we'd like to search
-
-            ids: ID or IDs of products we'd like to search
-
-            product_parent: ID, or list of IDs of the immediate product parent. E.g. `product_parent ='12345'` will return all children of product `12345`. 
-
-        # Returns
-        List of products matching the search arguments.
-
-
-        # Examples
-
-        Let's find all the products with 'sul' in their name, or related names.
-
-        ```python
-        >>> Products().search(term='sul').to_df()
-        ```
-
-        |    | id         |     name   |             parent                     |
-        |---:|:-----------|------------|---------------------------------------:|
-        |  0 | 'a250444...| Marlim Sul |[{'name': 'Heavy-Sour', 'layer': ['su...|
-
-
-        Note the `term` search also looks for products with matching `related_names`
-
-
-        # Further Documentation
-
-        [VortexaAPI Vessel Reference](https://docs.vortexa.com/reference/POST/reference/products)
-
-        """
-        search_params = convert_values_to_list({
-            "term": term,
-            "ids": ids,
-            "product_parent": product_parent,
-        })
-
-        return ProductResult(super().search(**search_params))

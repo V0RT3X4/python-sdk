@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 
-def to_list(a) -> List:
+def convert_to_list(a) -> List:
     """Convert wraps element in list if element isn't a list already."""
     if a is None:
         return []
@@ -13,4 +13,4 @@ def to_list(a) -> List:
 
 def convert_values_to_list(data: Dict) -> Dict:
     """Convert each value to a list."""
-    return {k: to_list(v) for k, v in data.items()}
+    return {k: convert_to_list(v) for k, v in data.items()}

@@ -4,20 +4,23 @@ from typing import List, Tuple
 ID = str
 
 
-def is_valid_id(string: str) -> bool:
-    """Check string is valid SHA256 hash."""
-    return re.match("^[A-Fa-f0-9]{64}$", string) is not None
+def is_valid_id(potential_id) -> bool:
+    """Check if argument is valid SHA256 hash."""
+    return (
+        isinstance(potential_id, str)
+        and re.match("^[A-Fa-f0-9]{64}$", potential_id) is not None
+    )
 
 
-def split_ids_names(names_or_ids: List) -> Tuple[List[ID], List[str]]:
+def split_ids_other(ids_or_other: List) -> Tuple[List[ID], List]:
     """Extract IDs and names from a list, returning a list of IDs, and a list of names."""
     ids = []
-    names = []
+    others = []
 
-    for item in names_or_ids:
+    for item in ids_or_other:
         if is_valid_id(item):
             ids.append(item)
         else:
-            names.append(item)
+            others.append(item)
 
-    return ids, names
+    return ids, others
