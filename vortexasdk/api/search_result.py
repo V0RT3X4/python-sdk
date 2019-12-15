@@ -1,7 +1,7 @@
 import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Any
+from typing import List, Any, Type
 from functools import partial
 from multiprocessing import Pool
 
@@ -15,12 +15,12 @@ import pandas as pd
 
 
 class Result:
-    MULTI = False
 
-    def __init__(self, records, endpoint, default_columns):
+    DEFAULT_COLUMNS: List[str]
+
+    def __init__(self, records: List, endpoint: Type[Any]):
         self.records = records
         self.endpoint = endpoint
-        self.default_columns = default_columns
 
     @property
     def endpoint(self):
@@ -32,7 +32,7 @@ class Result:
             Geography, Product, Vessel, Corporation
         }
         if endpoint_value not in permitted_endpoints:
-            raise ValueError(f"{endpoint_value} is not a permitted dataclass")
+            raise ValueError(f"{endpoint_value} is not a permitted endpoint")
         else:
             self.__endpoint = endpoint_value
 
@@ -44,16 +44,10 @@ class Result:
     def default_columns(self, default_col_values):
         self.__default_columns = default_col_values
 
-    def to_list(self):
-        if not self.MULTI:
-            # standard to list
-            output_list = self._serialize_endpoint(self.records, List[self.endpoint])
-        else:
-            multi_serialize = partial(self._serialize_endpoint, data_class=self.endpoint)
-            # pool to list
-            pmap = Pool(os.cpu_count()).map
-            output_list = list(pmap(multi_serialize, self.records))
-        return output_list
+    def to_list(self) -> List:
+        """Convert results set to list"""
+        with Pool(os.cpu_count()) as pool:
+            return list(pool.map(self.endpoint.from_dict, self.records))
 
     def to_df(self, columns=None):
         df = pd.DataFrame(self.records)
