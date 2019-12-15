@@ -1,5 +1,6 @@
 from tests.testcases import TestCaseUsingRealAPI
 from tests.timer import Timer
+from vortexasdk import Products
 from vortexasdk.endpoints.vessels import Vessels
 
 
@@ -48,8 +49,18 @@ class TestVesselsReal(TestCaseUsingRealAPI):
         assert len(df) == 2
 
     def test_find_crude_vessels(self):
-        df = Vessels().search(vessel_product_types="crude").to_df()
+        crude = [
+            p.id
+            for p in Products().search("crude").to_list()
+            if "group" in p.layer
+        ]
+        df = Vessels().search(vessel_product_types=crude).to_df()
         assert len(df) > 1000
+
+    def test_load_all(self):
+        all_products = Vessels().load_all()
+
+        assert len(all_products) > 1000
 
     def test_search_load_all_vessels(self):
         with Timer("Search"):
@@ -63,3 +74,13 @@ class TestVesselsReal(TestCaseUsingRealAPI):
             print(df.head())
 
         assert len(result) >= 1_000
+
+    def test_search_is_case_agnostic(self):
+        uppercase = {
+            v.id for v in Vessels().search(vessel_classes="Suezmax").to_list()
+        }
+        lowercase = {
+            v.id for v in Vessels().search(vessel_classes="suezmax").to_list()
+        }
+
+        assert uppercase == lowercase

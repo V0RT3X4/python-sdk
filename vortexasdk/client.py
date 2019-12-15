@@ -1,16 +1,22 @@
 import copy
 import functools
 import os
+from json import JSONDecodeError
 from multiprocessing.pool import ThreadPool
-from typing import List
+from random import shuffle
+from typing import Dict, List
 
-import requests
 from requests import Response
+from tqdm import tqdm
 
 from vortexasdk.abstract_client import AbstractVortexaClient
 from vortexasdk.api.id import ID
 from vortexasdk.endpoints.endpoints import API_URL
 from vortexasdk.logger import get_logger
+from vortexasdk.retry_session import (
+    retry_get,
+    retry_post,
+)
 
 logger = get_logger(__name__)
 
@@ -18,45 +24,54 @@ logger = get_logger(__name__)
 class VortexaClient(AbstractVortexaClient):
     """The API client responsible for calling Vortexa's Public API."""
 
-    _DEFAULT_PAGE_LOAD_SIZE = 10000
+    _DEFAULT_PAGE_LOAD_SIZE = int(1e4)
+    _N_THREADS = 6
+    _MAX_ALLOWED_TOTAL = int(1e6)
 
     def __init__(self, **kwargs):
         self.api_key = kwargs["api_key"]
 
-    def get_reference(self, resource: str, id: ID) -> str:
+    def get_reference(self, resource: str, id: ID) -> List[Dict]:
         """Lookup reference data."""
         url = self._create_url(f"{resource}/{id}")
-        response = requests.get(url)
+        response = retry_get(url)
         return _handle_response(response)["data"]
 
     def search(self, resource: str, **data) -> List:
         """Search using `resource` using `**data` as filter params."""
         url = self._create_url(resource)
-
         payload = {k: v for k, v in data.items() if v is not None}
-
         total = _send_post_request(url, payload, size=1, offset=0)["total"]
 
-        size = data.get("size", 1000)
-        offsets = [i for i in range(0, total, size)]
-
-        n_threads = 4
-        with ThreadPool(n_threads) as pool:
-            logger.debug(
-                f"{total} Results to retreive."
-                f" Sending {len(offsets)}"
-                f" post requests in parallel using {n_threads} threads."
+        if total > self._MAX_ALLOWED_TOTAL:
+            raise Exception(
+                f"Attempting to query too many records at once. Attempted records: {total}, Max allowed records: {self._MAX_ALLOWED_TOTAL} . "
+                f"Try reducing the date range to return fewer records."
             )
 
-            responses = pool.map(
-                functools.partial(
+        size = data.get("size", 1000)
+        offsets = list(range(0, total, size))
+        shuffle(offsets)
+
+        with tqdm(
+            total=total, desc="Loading from API", disable=(len(offsets) == 1)
+        ) as pbar:
+            with ThreadPool(self._N_THREADS) as pool:
+                logger.info(
+                    f"{total} Results to retreive."
+                    f" Sending {len(offsets)}"
+                    f" post requests in parallel using {self._N_THREADS} threads."
+                )
+
+                func = functools.partial(
                     _send_post_request_data,
                     url=url,
                     payload=payload,
                     size=size,
-                ),
-                offsets,
-            )
+                    progress_bar=pbar,
+                )
+
+                responses = pool.map(func, offsets)
 
         flattened = [x for y in responses for x in y]
 
@@ -66,11 +81,21 @@ class VortexaClient(AbstractVortexaClient):
         return f"{API_URL}{path}?apikey={self.api_key}"
 
 
-def _send_post_request_data(offset, url, payload, size):
-    return _send_post_request(url, payload, size, offset)["data"]
+def _send_post_request_data(
+    offset, url, payload, size, progress_bar: tqdm
+) -> List:
+    # noinspection PyBroadException
+    try:
+        progress_bar.update(size)
+    except Exception:
+        logger.warn("Could not update progress bar")
+
+    dict_response = _send_post_request(url, payload, size, offset)
+
+    return dict_response.get("data", [])
 
 
-def _send_post_request(url, payload, size, offset):
+def _send_post_request(url, payload, size, offset) -> Dict:
     logger.debug(f"Sending post request, offset: {offset}, size: {size}")
 
     payload_with_offset = copy.deepcopy(payload)
@@ -80,25 +105,36 @@ def _send_post_request(url, payload, size, offset):
     payload_with_offset["size"] = size
     payload_with_offset["cm_size"] = size
 
-    response = requests.post(url, json=payload_with_offset)
+    response = retry_post(url, json=payload_with_offset)
 
-    response = _handle_response(response, payload_with_offset)
-
-    logger.debug(
-        f'Post request from offset {offset} received {len(response["data"])} items'
-    )
-
-    return response
+    return _handle_response(response, payload_with_offset)
 
 
-def _handle_response(response: Response, payload=None):
-    if response.ok:
-        return response.json()
-    else:
+def _handle_response(response: Response, payload: Dict = None) -> Dict:
+    if not response.ok:
         logger.error(response.reason)
-        logger.error(response.json())
+        logger.error(response.status_code)
+        logger.error(response)
+
+        # noinspection PyBroadException
+        try:
+            logger.error(response.json())
+        except Exception:
+            pass
+
         logger.error(f"payload: {payload}")
-        raise Exception(response)
+        json = {}
+    else:
+        try:
+            json = response.json()
+        except JSONDecodeError:
+            logger.error("Could not decode response")
+            json = {}
+        except Exception as e:
+            logger.error(e)
+            json = {}
+
+    return json
 
 
 __client__ = None

@@ -38,18 +38,10 @@ jobs:
           name: "Run all tests, including live API"
           command: |
             . .venv/bin/activate
-            pytest -v
+            pytest -v --doctest-modules
 
       - run:
           name: "Build docs"
           command: |
             . .venv/bin/activate
             ./docs/build_docs.sh
-
-      - run:
-          name: "Deploy docs to gihub pages if master"
-          command: |
-            if [[ ${CIRCLE_BRANCH} == "master" ]]; then
-              . .venv/bin/activate
-              ./docs/deploy_docs.sh
-            fi

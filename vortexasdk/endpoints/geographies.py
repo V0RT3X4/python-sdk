@@ -1,5 +1,5 @@
 """Geographies Endpoint."""
-from typing import List, Union
+from typing import List, Union, Dict
 
 from vortexasdk.api import ID
 from vortexasdk.endpoints.endpoints import GEOGRAPHIES_REFERENCE
@@ -15,7 +15,11 @@ class Geographies(Reference, Search):
         Reference.__init__(self, GEOGRAPHIES_REFERENCE)
         Search.__init__(self, GEOGRAPHIES_REFERENCE)
 
-    def search(self, term: Union[str, List[str]]) -> GeographyResult:
+    def load_all(self) -> GeographyResult:
+        """Load all geographies."""
+        return self.search()
+
+    def search(self, term: Union[str, List[str]] = None) -> GeographyResult:
         """
         Find all geographies matching given search terms.
 
@@ -31,13 +35,15 @@ class Geographies(Reference, Search):
         Find all geographies with `portsmouth` in the name.
         ```python
         >>> from vortexasdk import Geographies
-        >>> [x["name"] for x in Geographies().search(term="portsmouth")]
-            ['Portsmouth [GB]', 'Portsmouth, NH [US]']
+        >>> [x.name for x in Geographies().search(term="portsmouth").to_list()]
+        ['Portsmouth [GB]', 'Portsmouth, NH [US]']
+
         ```
 
         Search multiple geography terms
         ```python
         >>> df = Geographies().search(term=["Liverpool", "Southampton"]).to_df()
+
         ```
         returns
 
@@ -51,7 +57,7 @@ class Geographies(Reference, Search):
         params = convert_values_to_list({"term": term})
         return GeographyResult(super().search(**params))
 
-    def reference(self, id: ID):
+    def reference(self, id: ID) -> Dict:
         """
         Perform a geography lookup.
 

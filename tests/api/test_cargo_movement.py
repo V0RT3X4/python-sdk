@@ -1,7 +1,7 @@
-from typing import List
 from unittest import TestCase
 
 import jsons
+from typing import List
 
 from vortexasdk.api import (
     CargoEvent,
@@ -15,14 +15,6 @@ from vortexasdk.api.entity_flattening import (
     convert_cargo_movement_to_flat_dict,
 )
 from vortexasdk.api.serdes import serialize_to_dict
-from vortexasdk.api import (
-    CargoEvent,
-    CargoMovement,
-    CorporateEntity,
-    GeographyEntity,
-    ProductEntity,
-    VesselEntity,
-)
 
 
 class TestCargoMovement(TestCase):

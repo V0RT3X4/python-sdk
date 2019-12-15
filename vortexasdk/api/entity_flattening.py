@@ -45,8 +45,6 @@ def convert_vessel_movement_to_flat_dict(vm: Dict, cols="all") -> Dict:
 
 def _group_vessel_movement_attributes_by_layer(vm: Dict) -> Dict:
     """Group relevant `VesselMovement` attributes by `Entity.layer`."""
-    flat_vessel_entity = _flatten_vessel_entity(vm["vessel"])
-
     if "origin" in vm.keys():
         flat_origin = _flatten_attributes(vm["origin"], "location")
         vm["origin"] = flat_origin
@@ -61,7 +59,7 @@ def _group_vessel_movement_attributes_by_layer(vm: Dict) -> Dict:
         ]
         vm["cargoes"] = flat_cargoes
 
-    vm["vessels"] = flat_vessel_entity
+    vm["vessel"] = _flatten_vessel_entity(vm["vessel"])
     return vm
 
 

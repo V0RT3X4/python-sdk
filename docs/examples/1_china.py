@@ -14,16 +14,26 @@ The below script returns:
 """
 from datetime import datetime
 
-from vortexasdk import CargoMovements
+from vortexasdk import CargoMovements, Geographies, Vessels
 
-df = (
-    CargoMovements()
-    .search(
-        filter_activity="loading_start",
-        filter_vessels="vlcc",
-        filter_destinations="China",
-        filter_time_min=datetime(2019, 8, 29),
-        filter_time_max=datetime(2019, 10, 30),
-    )
-    .to_df()
+# Find china ID
+china = [
+    g.id
+    for g in Geographies().search(term="china").to_list()
+    if "country" in g.layer
+]
+
+# Find the ID of all VLCCs
+vlccs = [v.id for v in Vessels().search(vessel_classes="vlcc_plus").to_list()]
+
+# Query API
+search_result = CargoMovements().search(
+    filter_activity="loading_start",
+    filter_vessels=vlccs,
+    filter_destinations=china,
+    filter_time_min=datetime(2019, 8, 29),
+    filter_time_max=datetime(2019, 10, 30),
 )
+
+# Convert search result to dataframe
+df = search_result.to_df()

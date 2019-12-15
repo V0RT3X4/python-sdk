@@ -1,5 +1,115 @@
 # Changelog
 
+## [0.11.0](https://github.com/V0RT3X4/python-sdk/tree/0.11.0) (2019-12-11)
+
+[Full Changelog](https://github.com/V0RT3X4/python-sdk/compare/0.10.0...0.11.0)
+
+**Merged pull requests:**
+
+- Remove load all [\#139](https://github.com/V0RT3X4/python-sdk/pull/139) ([KitBurgess](https://github.com/KitBurgess))
+- perf: Failfast if \> 1e6 records returned from API in single call [\#138](https://github.com/V0RT3X4/python-sdk/pull/138) ([KitBurgess](https://github.com/KitBurgess))
+
+## [0.10.0](https://github.com/V0RT3X4/python-sdk/tree/0.10.0) (2019-12-11)
+
+[Full Changelog](https://github.com/V0RT3X4/python-sdk/compare/0.9.2...0.10.0)
+
+**Merged pull requests:**
+
+- Remove fuzzy search [\#134](https://github.com/V0RT3X4/python-sdk/pull/134) ([KitBurgess](https://github.com/KitBurgess))
+
+## [0.9.2](https://github.com/V0RT3X4/python-sdk/tree/0.9.2) (2019-12-11)
+
+[Full Changelog](https://github.com/V0RT3X4/python-sdk/compare/0.9.1...0.9.2)
+
+**Fixed bugs:**
+
+- Fix SDK Stability issues [\#127](https://github.com/V0RT3X4/python-sdk/issues/127)
+
+**Merged pull requests:**
+
+- refactor: Call doctests using pytest [\#137](https://github.com/V0RT3X4/python-sdk/pull/137) ([KitBurgess](https://github.com/KitBurgess))
+- test: Actually run doctest on all files [\#136](https://github.com/V0RT3X4/python-sdk/pull/136) ([KitBurgess](https://github.com/KitBurgess))
+- fix: search on vessel class is case insensitive [\#135](https://github.com/V0RT3X4/python-sdk/pull/135) ([Natday](https://github.com/Natday))
+- docs: Check doctests are valid code [\#133](https://github.com/V0RT3X4/python-sdk/pull/133) ([KitBurgess](https://github.com/KitBurgess))
+- docs: Add crude from saudi arabia to india example [\#132](https://github.com/V0RT3X4/python-sdk/pull/132) ([KitBurgess](https://github.com/KitBurgess))
+- perf: Shuffle offsets inplace for more accurate progress ETA, increas… [\#131](https://github.com/V0RT3X4/python-sdk/pull/131) ([KitBurgess](https://github.com/KitBurgess))
+
+## [0.9.1](https://github.com/V0RT3X4/python-sdk/tree/0.9.1) (2019-12-09)
+
+[Full Changelog](https://github.com/V0RT3X4/python-sdk/compare/0.9.0...0.9.1)
+
+**Implemented enhancements:**
+
+- Show loading progress bar [\#123](https://github.com/V0RT3X4/python-sdk/issues/123)
+
+**Merged pull requests:**
+
+- fix: Handle API failures in VortexaClient [\#130](https://github.com/V0RT3X4/python-sdk/pull/130) ([KitBurgess](https://github.com/KitBurgess))
+- feat: Add progressbar [\#129](https://github.com/V0RT3X4/python-sdk/pull/129) ([KitBurgess](https://github.com/KitBurgess))
+
+## [0.9.0](https://github.com/V0RT3X4/python-sdk/tree/0.9.0) (2019-12-05)
+
+[Full Changelog](https://github.com/V0RT3X4/python-sdk/compare/0.8.5...0.9.0)
+
+**Implemented enhancements:**
+
+- Add load all reference data method [\#81](https://github.com/V0RT3X4/python-sdk/issues/81)
+
+**Fixed bugs:**
+
+- CargoMovementsResult.to\_df\('all'\) blows up [\#120](https://github.com/V0RT3X4/python-sdk/issues/120)
+- Reference shouldn't return a list [\#69](https://github.com/V0RT3X4/python-sdk/issues/69)
+
+**Closed issues:**
+
+- Inconsistent search signatures across endpoints  [\#114](https://github.com/V0RT3X4/python-sdk/issues/114)
+- Consider adopting All Contributors specification [\#98](https://github.com/V0RT3X4/python-sdk/issues/98)
+- Sample notebook with charts [\#83](https://github.com/V0RT3X4/python-sdk/issues/83)
+
+**Merged pull requests:**
+
+- fix: CargoMovementsResult to\_df all columns, closes \#120 [\#121](https://github.com/V0RT3X4/python-sdk/pull/121) ([KitBurgess](https://github.com/KitBurgess))
+- Load all [\#119](https://github.com/V0RT3X4/python-sdk/pull/119) ([KitBurgess](https://github.com/KitBurgess))
+- fix: Consistent search signatures, closes \#114 [\#118](https://github.com/V0RT3X4/python-sdk/pull/118) ([KitBurgess](https://github.com/KitBurgess))
+- fix: Reference now returns dict, fixes \#69 [\#116](https://github.com/V0RT3X4/python-sdk/pull/116) ([KitBurgess](https://github.com/KitBurgess))
+- docs: add asfakianakis as a contributor [\#113](https://github.com/V0RT3X4/python-sdk/pull/113) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add ChloeConnor as a contributor [\#112](https://github.com/V0RT3X4/python-sdk/pull/112) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add ArthurD1 as a contributor [\#111](https://github.com/V0RT3X4/python-sdk/pull/111) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add Natday as a contributor [\#110](https://github.com/V0RT3X4/python-sdk/pull/110) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add rugg2 as a contributor [\#109](https://github.com/V0RT3X4/python-sdk/pull/109) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add paddyroddy as a contributor [\#108](https://github.com/V0RT3X4/python-sdk/pull/108) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add eadwright as a contributor [\#107](https://github.com/V0RT3X4/python-sdk/pull/107) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add kujon as a contributor [\#106](https://github.com/V0RT3X4/python-sdk/pull/106) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add syed1992 as a contributor [\#105](https://github.com/V0RT3X4/python-sdk/pull/105) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add dstarkey23 as a contributor [\#103](https://github.com/V0RT3X4/python-sdk/pull/103) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add cvonsteg as a contributor [\#100](https://github.com/V0RT3X4/python-sdk/pull/100) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add KitBurgess as a contributor [\#99](https://github.com/V0RT3X4/python-sdk/pull/99) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+
+## [0.8.5](https://github.com/V0RT3X4/python-sdk/tree/0.8.5) (2019-11-28)
+
+[Full Changelog](https://github.com/V0RT3X4/python-sdk/compare/0.8.4...0.8.5)
+
+**Fixed bugs:**
+
+- Make client more robust [\#95](https://github.com/V0RT3X4/python-sdk/issues/95)
+
+**Merged pull requests:**
+
+- fix: Retry API calls on 502, 504 status codes, fixes \#95 [\#97](https://github.com/V0RT3X4/python-sdk/pull/97) ([KitBurgess](https://github.com/KitBurgess))
+- docs: Add link to CM/VM concepts [\#96](https://github.com/V0RT3X4/python-sdk/pull/96) ([KitBurgess](https://github.com/KitBurgess))
+
+## [0.8.4](https://github.com/V0RT3X4/python-sdk/tree/0.8.4) (2019-11-28)
+
+[Full Changelog](https://github.com/V0RT3X4/python-sdk/compare/0.8.3...0.8.4)
+
+**Closed issues:**
+
+- add 'filter\_vessel\_class' argument to cargo movements [\#39](https://github.com/V0RT3X4/python-sdk/issues/39)
+
+**Merged pull requests:**
+
+- Vessel movements bettering [\#94](https://github.com/V0RT3X4/python-sdk/pull/94) ([KitBurgess](https://github.com/KitBurgess))
+
 ## [0.8.3](https://github.com/V0RT3X4/python-sdk/tree/0.8.3) (2019-11-27)
 
 [Full Changelog](https://github.com/V0RT3X4/python-sdk/compare/0.8.2...0.8.3)

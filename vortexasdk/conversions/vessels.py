@@ -15,8 +15,9 @@ def convert_to_vessel_ids(
 
     # Example
     ```
-        >>> convert_to_vessel_ids(["Stallion", 9464326, 477639900, 'vlcc'])
-    ['e486ca3d2e58b61d683b5143a063ec309f2fa3bfd0b87d91984f43d9ee5071fb',...]
+    >>> convert_to_vessel_ids(["Stallion", 9464326, 477639900, 'vlcc'])
+    [...]
+
     ```
     """
 

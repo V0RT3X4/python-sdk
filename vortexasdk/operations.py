@@ -1,7 +1,8 @@
-from typing import List
+from typing import Dict, List
 
 from vortexasdk.api.id import ID
 from vortexasdk.client import default_client
+from vortexasdk.exceptions import InvalidAPIDataResponseException
 from vortexasdk.logger import get_logger
 
 logger = get_logger(__name__)
@@ -20,7 +21,7 @@ class Reference:
         """
         self._resource = resource
 
-    def reference(self, id: ID):
+    def reference(self, id: ID) -> Dict:
         """
         Lookup reference data using ID.
 
@@ -32,13 +33,22 @@ class Reference:
 
         # Examples
 
-            >>> Reference("/reference/geographies").reference(id='cfb8c4ef76585c3a37792b643791a0f4ff6d5656d5508927d8017319e21f2fca')
+        >>> Reference("/reference/geographies").reference(id='cfb8c4ef76585c3a37792b643791a0f4ff6d5656d5508927d8017319e21f2fca') # doctest: +SKIP
 
         """
         logger.info(
             f"Looking up {self.__class__.__name__} reference data with id: {id}"
         )
-        return default_client().get_reference(self._resource, id)
+
+        data = default_client().get_reference(self._resource, id)
+
+        assert len(data) <= 1, InvalidAPIDataResponseException(
+            f"Server error: more than one record returned matching ID {id}"
+        )
+        try:
+            return data[0]
+        except IndexError:
+            return {}
 
 
 class Search:
@@ -66,7 +76,7 @@ class Search:
 
         # Examples
 
-            >>> Search("/reference/vessels").search(term="DHT")
+        >>> Search("/reference/vessels").search(term="DHT") # doctest: +SKIP
 
         """
         logger.info(

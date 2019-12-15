@@ -32,8 +32,9 @@ class MockVortexaClient(AbstractVortexaClient):
         VESSEL_MOVEMENTS_RESOURCE: example_vessel_movements,
     }
 
-    def get_reference(self, resource: str, id: ID) -> str:
-        return ""
+    def get_reference(self, resource: str, id: ID) -> List[Dict]:
+        entities = MockVortexaClient._results[resource]
+        return [e for e in entities if e["id"] == id]
 
     def search(self, resource: str, **data) -> List:
         return MockVortexaClient._results[resource]

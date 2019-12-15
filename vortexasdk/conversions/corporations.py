@@ -13,8 +13,9 @@ def convert_to_corporation_ids(
 
     # Example
     ```
-        >>> convert_to_corporation_ids(["Exon"])
-    ['e486ca3d2e58b61d683b5143a063ec309f2fa3bfd0b87d91984f43d9ee5071fb',...]
+    >>> convert_to_corporation_ids(["Exon"])
+    [...]
+
     ```
     """
     return _convert_to_ids(ids_or_names_list, Corporations())

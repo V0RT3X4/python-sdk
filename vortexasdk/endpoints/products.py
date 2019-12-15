@@ -1,5 +1,5 @@
 """Products Endpoint."""
-from typing import List, Union
+from typing import List, Union, Dict
 
 from vortexasdk.api.shared_types import ID
 from vortexasdk.endpoints.endpoints import PRODUCTS_REFERENCE
@@ -16,6 +16,10 @@ class Products(Reference, Search):
         """Instantiate endpoint using reference endpoint."""
         Reference.__init__(self, PRODUCTS_REFERENCE)
         Search.__init__(self, PRODUCTS_REFERENCE)
+
+    def load_all(self) -> ProductResult:
+        """Load all products."""
+        return self.search()
 
     def search(
         self,
@@ -43,7 +47,8 @@ class Products(Reference, Search):
 
         ```python
         >>> from vortexasdk import Products
-        >>> Products().search(term=['diesel', 'fuel oil', 'grane']).to_df('all')
+        >>> df = Products().search(term=['diesel', 'fuel oil', 'grane']).to_df('all')
+
         ```
         Returns
 
@@ -68,7 +73,7 @@ class Products(Reference, Search):
 
         return ProductResult(super().search(**search_params))
 
-    def reference(self, id: ID):
+    def reference(self, id: ID) -> Dict:
         """
         Perform a product lookup.
 

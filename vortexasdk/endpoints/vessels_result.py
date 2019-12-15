@@ -32,11 +32,12 @@ class VesselsResult(Result):
 
         """
         if columns is None:
-            columns = ["id", "name", "imo", "vessel_class"]
-
-        df = pd.DataFrame(super().to_list())
+            columns = DEFAULT_COLUMNS
 
         if columns == "all":
-            return df
+            return pd.DataFrame(data=super().to_list())
         else:
-            return df[columns]
+            return pd.DataFrame(data=super().to_list(), columns=columns)
+
+
+DEFAULT_COLUMNS = ["id", "name", "imo", "vessel_class"]

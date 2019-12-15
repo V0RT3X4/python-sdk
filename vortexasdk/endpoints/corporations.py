@@ -1,5 +1,5 @@
 """Corporations Endpoint."""
-from typing import List, Union
+from typing import List, Union, Dict
 
 from vortexasdk.api import ID
 from vortexasdk.endpoints.corporations_result import CorporationsResult
@@ -14,6 +14,10 @@ class Corporations(Reference, Search):
     def __init__(self):
         Reference.__init__(self, CORPORATIONS_REFERENCE)
         Search.__init__(self, CORPORATIONS_REFERENCE)
+
+    def load_all(self) -> CorporationsResult:
+        """Load all corporations."""
+        return self.search()
 
     def search(self, term: Union[str, List[str]] = None) -> CorporationsResult:
         """
@@ -31,7 +35,8 @@ class Corporations(Reference, Search):
         Let's load all corporations
         ```python
         >>> from vortexasdk import Corporations
-        >>> Corporations().search().to_df()
+        >>> df = Corporations().search().to_df()
+
         ```
         returns
 
@@ -44,7 +49,8 @@ class Corporations(Reference, Search):
         Let's find all corporations with 'do' in the name.
         ```python
         >>> [x.name for x in Corporations().search(term="do").to_list()]
-            ['Donsotank', 'Dorval SC']
+        [...]
+
         ```
 
         # Further Documentation
@@ -55,7 +61,7 @@ class Corporations(Reference, Search):
         params = convert_values_to_list({"term": term})
         return CorporationsResult(super().search(**params))
 
-    def reference(self, id: ID):
+    def reference(self, id: ID) -> Dict:
         """
         Perform a corporation lookup.
 
@@ -69,7 +75,7 @@ class Corporations(Reference, Search):
         [VortexaAPI Corporation Reference](https://docs.vortexa.com/reference/GET/reference/charterers/%7Bid%7D)
 
         # Examples
-            >>> Corporations().reference(id='12345abcdef')
+        >>> Corporations().reference(id='12345abcdef') # doctest: +SKIP
 
         """
         return super().reference(id)

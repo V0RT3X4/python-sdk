@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="vortexasdk",
-    version="0.8.3",
+    version="0.11.0",
     author="Vortexa Developers",
     author_email="developers@vortexa.com",
     description="Vortexa SDK",
@@ -25,6 +25,7 @@ setuptools.setup(
         "requests==2.22.0",
         "jsons==1.0.0",
         "flatten-dict==0.2.0",
+        "tqdm==4.38.0",
     ],
     extras_require={
         "tests": [

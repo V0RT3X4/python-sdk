@@ -58,7 +58,7 @@ class IDNameLayer:
     """Triple holding `id`, `name`, and `layer`."""
 
     id: ID
-    layer: str
+    layer: List[str]
     name: str
 
 

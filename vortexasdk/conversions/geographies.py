@@ -13,14 +13,16 @@ def convert_to_geography_ids(
 
     # Example
     ```
-        >>> convert_to_geography_ids(["Rotterdam [NL]"])
-    ['3a063ec309f2fe486ca3d2e58b61d683b514a3bfd0b87d91984f43d9ee5071fb', '95d76e403920bf0b2ffc49b7439fd8a9b376980e8ab37241b4581549f50afca2',...]
+    >>> convert_to_geography_ids(["Rotterdam [NL]"])
+    [...]
+
     ```
 
     # Example
     ```
-        >>> convert_to_geography_ids(["Rotterdam [NL]", "b514a3bfd0b87d91984f43d9ee5071fb3a063ec309f2fe486ca3d2e58b61d683"])
-    ['b514a3bfd0b87d91984f43d9ee5071fb3a063ec309f2fe486ca3d2e58b61d683', '95d76e403920bf0b2ffc49b7439fd8a9b376980e8ab37241b4581549f50afca2',...]
+    >>> convert_to_geography_ids(["Rotterdam [NL]", "b514a3bfd0b87d91984f43d9ee5071fb3a063ec309f2fe486ca3d2e58b61d683"])
+    [...]
+
     ```
 
     """

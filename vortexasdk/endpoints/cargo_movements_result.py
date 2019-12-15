@@ -543,7 +543,10 @@ class CargoMovementsResult(Result):
         with Pool(os.cpu_count()) as pool:
             records = pool.map(flatten, super().to_list())
 
-        return pd.DataFrame(data=records, columns=columns)
+        if columns == "all":
+            return pd.DataFrame(data=records)
+        else:
+            return pd.DataFrame(data=records, columns=columns)
 
 
 DEFAULT_COLUMNS = [

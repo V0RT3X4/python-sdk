@@ -1,0 +1,129 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "KitBurgess",
+      "name": "Kit Burgess",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/33626692?v=4",
+      "profile": "http://vortexa.com/",
+      "contributions": [
+        "design",
+        "code"
+      ]
+    },
+    {
+      "login": "cvonsteg",
+      "name": "tinovs",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/28671095?v=4",
+      "profile": "https://github.com/cvonsteg",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    },
+    {
+      "login": "dstarkey23",
+      "name": "David Andrew Starkey",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/11855684?v=4",
+      "profile": "http://star-www.st-and.ac.uk/~ds207/",
+      "contributions": [
+        "code",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "syed1992",
+      "name": "syed",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/45287337?v=4",
+      "profile": "https://github.com/syed1992",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "kujon",
+      "name": "Jakub Korzeniowski",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/503380?v=4",
+      "profile": "https://www.vortexa.com/",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "eadwright",
+      "name": "Edward Wright",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/17048626?v=4",
+      "profile": "https://github.com/eadwright",
+      "contributions": [
+        "userTesting"
+      ]
+    },
+    {
+      "login": "paddyroddy",
+      "name": "Patrick Roddy",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/15052188?v=4",
+      "profile": "https://paddyroddy.github.io/",
+      "contributions": [
+        "userTesting"
+      ]
+    },
+    {
+      "login": "rugg2",
+      "name": "Romain",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/37453675?v=4",
+      "profile": "https://github.com/rugg2",
+      "contributions": [
+        "userTesting",
+        "ideas"
+      ]
+    },
+    {
+      "login": "Natday",
+      "name": "Natday",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/38128493?v=4",
+      "profile": "https://github.com/Natday",
+      "contributions": [
+        "business",
+        "ideas",
+        "userTesting"
+      ]
+    },
+    {
+      "login": "ArthurD1",
+      "name": "ArthurD1",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/44548105?v=4",
+      "profile": "https://github.com/ArthurD1",
+      "contributions": [
+        "userTesting"
+      ]
+    },
+    {
+      "login": "ChloeConnor",
+      "name": "Chloe Connor",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/42340891?v=4",
+      "profile": "https://github.com/ChloeConnor",
+      "contributions": [
+        "userTesting"
+      ]
+    },
+    {
+      "login": "asfakianakis",
+      "name": "Achilleas Sfakianakis",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/31421156?v=4",
+      "profile": "https://www.vortexa.com/",
+      "contributions": [
+        "userTesting"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "python-sdk",
+  "projectOwner": "V0RT3X4",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}

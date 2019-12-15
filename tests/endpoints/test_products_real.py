@@ -46,6 +46,11 @@ class TestProductsReal(TestCaseUsingRealAPI):
             in result
         )
 
+    def test_load_all(self):
+        all_products = Products().load_all()
+
+        assert len(all_products) > 100
+
     def test_search_multiple_terms_to_dataframe(self):
         df = (
             Products()
@@ -75,4 +80,4 @@ class TestProductsReal(TestCaseUsingRealAPI):
             "6f11b0724c9a4e85ffa7f1445bc768f054af755a090118dcf99f14745c261653"
         )
 
-        assert result[0]["name"] == "Crude"
+        assert result["name"] == "Crude"

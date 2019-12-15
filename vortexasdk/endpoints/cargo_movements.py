@@ -2,20 +2,23 @@
 from datetime import datetime
 from typing import List, Union
 
+from vortexasdk.api import ID
 from vortexasdk.api.shared_types import to_ISODate
-from vortexasdk.conversions import (
-    convert_to_corporation_ids,
-    convert_to_geography_ids,
-    convert_to_product_ids,
-    convert_to_vessel_ids,
-)
 from vortexasdk.endpoints.cargo_movements_result import CargoMovementsResult
 from vortexasdk.endpoints.endpoints import CARGO_MOVEMENTS_RESOURCE
+from vortexasdk.logger import get_logger
 from vortexasdk.operations import Search
+from vortexasdk.utils import convert_to_list
+
+logger = get_logger(__name__)
 
 
 class CargoMovements(Search):
-    """Cargo Movements Endpoint, use this to search through Vortexa's cargo movements."""
+    """
+    Cargo Movements Endpoint, use this to search through Vortexa's cargo movements.
+
+    A detailed explanation of Cargo/Vessel Movements can be found [here](https://docs.vortexa.com/reference/intro-movement-difference).
+    """
 
     _MAX_PAGE_RESULT_SIZE = 500
 
@@ -28,15 +31,15 @@ class CargoMovements(Search):
         filter_time_min: datetime = datetime(2019, 10, 1, 0),
         filter_time_max: datetime = datetime(2019, 10, 1, 1),
         cm_unit: str = "b",
-        filter_charterers: Union[str, List[str]] = None,
-        filter_destinations: Union[str, List[str]] = None,
-        filter_origins: Union[str, List[str]] = None,
-        filter_owners: Union[str, List[str]] = None,
-        filter_products: Union[str, List[str]] = None,
-        filter_vessels: Union[str, List[str]] = None,
-        filter_storage_locations: Union[str, List[str]] = None,
-        filter_ship_to_ship_locations: Union[str, List[str]] = None,
-        filter_waypoints: Union[str, List[str]] = None,
+        filter_charterers: Union[ID, List[ID]] = None,
+        filter_destinations: Union[ID, List[ID]] = None,
+        filter_origins: Union[ID, List[ID]] = None,
+        filter_owners: Union[ID, List[ID]] = None,
+        filter_products: Union[ID, List[ID]] = None,
+        filter_vessels: Union[ID, List[ID]] = None,
+        filter_storage_locations: Union[ID, List[ID]] = None,
+        filter_ship_to_ship_locations: Union[ID, List[ID]] = None,
+        filter_waypoints: Union[ID, List[ID]] = None,
         disable_geographic_exclusion_rules: bool = None,
     ) -> CargoMovementsResult:
         """
@@ -55,23 +58,23 @@ class CargoMovements(Search):
 
             cm_unit: Unit of measurement. Enter 'b' for barrels or 't' for tonnes.
 
-            filter_corporations: A corporation, or list of corporations to filter on.
+            filter_corporations: A corporation ID, or list of corporation IDs to filter on.
 
-            filter_destinations: A geography, or list of geographies to filter on. Both geography names or IDs can be entered here.
+            filter_destinations: A geography ID, or list of geography IDs to filter on.
 
-            filter_origins: A geography, or list of geographies to filter on. Both geography names or IDs can be entered here.
+            filter_origins: A geography ID, or list of geography IDs to filter on.
 
-            filter_owners: An owner, or list of owners to filter on. Both charterer/owner names or IDs can be entered here.
+            filter_owners: An owner ID, or list of owner IDs to filter on.
 
-            filter_products: A product, or list of products to filter on. Both product names or IDs can be entered here.
+            filter_products: A product ID, or list of product IDs to filter on.
 
-            filter_vessels: A vessel, or list of vessels to filter on. Vessel name, imo, mmsi, vessel class, or vessel IDs can be entered here,
+            filter_vessels: A vessel ID, or list of vessel IDs to filter on.
 
-            filter_storage_locations: A geography, or list of geography to filter on. Both geography names or IDs can be entered here.
+            filter_storage_locations: A geography ID, or list of geography IDs to filter on.
 
-            filter_ship_to_ship_locations: A geography, or list of geography to filter on. Both geography names or IDs can be entered here.
+            filter_ship_to_ship_locations: A geography ID, or list of geography IDs to filter on.
 
-            filter_waypoints: A geography, or list of geography to filter on. Both geography names or IDs can be entered here.
+            filter_waypoints: A geography ID, or list of geography IDs to filter on.
 
             disable_geographic_exclusion_rules: This controls a popular industry term "intra-movements" and determines
              the filter behaviour for cargo leaving then entering the same geographic area.
@@ -86,15 +89,16 @@ class CargoMovements(Search):
 
 
         ```python
-        >>> from vortexasdk import CargoMovements
-        >>> df = CargoMovements().search(
-            filter_origins="Rotterdam",
-            filter_activity='loading_state',
-            filter_time_min=datetime(2018, 12, 1),
-            filter_time_max=datetime(2018, 12, 1, 12),
-        ).to_df(columns=['product.grade.label', 'product.group.label', 'vessels.0.vessel_class'])
-        ```
+        >>> from vortexasdk import CargoMovements, Geographies
+        >>> rotterdam = [g.id for g in Geographies().search("rotterdam").to_list() if "port" in g.layer]
+        >>> search_result = CargoMovements().search(
+        ...    filter_origins=rotterdam,
+        ...    filter_activity='loading_state',
+        ...    filter_time_min=datetime(2018, 12, 1),
+        ...    filter_time_max=datetime(2018, 12, 1, 12))
+        >>> df = search_result.to_df(columns=['product.grade.label', 'product.group.label', 'vessels.0.vessel_class'])
 
+        ```
         |    | product.group.label   | product.grade.label             | vessels.0.vessel_class   |
         |---:|:----------------------|:--------------------------------|:-------------------------|
         |  0 | Clean products        | Pygas                           | general_purpose          |
@@ -111,17 +115,20 @@ class CargoMovements(Search):
         This lets us view all vessels present in any STS operations.
 
         ```python
-        >>> from vortexasdk import CargoMovements
+        >>> from vortexasdk import CargoMovements, Geographies, Vessels
+        >>> suez = [g.id for g in Geographies().search("suez").to_list()]
+        >>> china = [g.id for g in Geographies().search("china").to_list() if "country" in g.layer]
+        >>> vlccs = [v.id for v in Vessels().search(vessel_classes="vlcc_plus").to_list()]
+        >>> cargo_movement_search_result = CargoMovements().search(
+        ...    filter_destinations=china,
+        ...    filter_activity="loading_state",
+        ...    filter_waypoints=suez,
+        ...    filter_vessels=vlccs,
+        ...    filter_time_min=datetime(2018, 12, 1),
+        ...    filter_time_max=datetime(2018, 12, 1))
         >>> cols = ['vessels.0.name', 'vessels.0.vessel_class', 'vessels.1.name', 'vessels.1.vessel_class',  'vessels.2.name', 'vessels.2.vessel_class', 'product.group.label', 'quantity']
+        >>> cargo_movements_df = cargo_movement_search_result.to_df(columns=cols)
 
-        >>> df = CargoMovements().search(
-            filter_destinations="China",
-            filter_activity="loading_state",
-            filter_waypoints="suez",
-            filter_vessels="vlcc",
-            filter_time_min=datetime(2016, 12, 01),
-            filter_time_max=datetime(2018, 12, 01),
-        ).to_df(columns=cols)
         ```
 
         |    | vessels.0.name   | vessels.0.vessel_class   | vessels.1.name   | vessels.1.vessel_class   | vessels.2.name   | vessels.2.vessel_class   | product.group.label   |   quantity |
@@ -143,21 +150,19 @@ class CargoMovements(Search):
             "filter_time_max": to_ISODate(filter_time_max),
             "cm_unit": cm_unit,
             "size": self._MAX_PAGE_RESULT_SIZE,
-            "filter_charterers": convert_to_corporation_ids(filter_charterers),
-            "filter_owners": convert_to_corporation_ids(filter_owners),
-            "filter_products": convert_to_product_ids(filter_products),
-            "filter_vessels": convert_to_vessel_ids(filter_vessels),
-            "filter_destinations": convert_to_geography_ids(
-                filter_destinations
-            ),
-            "filter_origins": convert_to_geography_ids(filter_origins),
-            "filter_storage_locations": convert_to_geography_ids(
+            "filter_charterers": convert_to_list(filter_charterers),
+            "filter_owners": convert_to_list(filter_owners),
+            "filter_products": convert_to_list(filter_products),
+            "filter_vessels": convert_to_list(filter_vessels),
+            "filter_destinations": convert_to_list(filter_destinations),
+            "filter_origins": convert_to_list(filter_origins),
+            "filter_storage_locations": convert_to_list(
                 filter_storage_locations
             ),
-            "filter_ship_to_ship_locations": convert_to_geography_ids(
+            "filter_ship_to_ship_locations": convert_to_list(
                 filter_ship_to_ship_locations
             ),
-            "filter_waypoints": convert_to_geography_ids(filter_waypoints),
+            "filter_waypoints": convert_to_list(filter_waypoints),
             "disable_geographic_exclusion_rules": disable_geographic_exclusion_rules,
         }
 

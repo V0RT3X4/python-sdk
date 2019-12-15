@@ -4,6 +4,7 @@ from typing import List, Optional, Tuple
 from vortexasdk.api.serdes import FromDictMixin
 from vortexasdk.api.shared_types import (
     EntityWithProbability,
+    ID,
     IDLayer,
     IDNameLayer,
     Node,
@@ -21,14 +22,17 @@ class BoundingBox:
 
 
 @dataclass(frozen=True)
-class Geography(Node, IDNameLayer, FromDictMixin):
+class Geography(Node, FromDictMixin):
     """Represent a Geography reference record returned by the API."""
 
-    bounding_box: Optional[BoundingBox]
-    centre_point: Optional[Position]
+    id: ID
+    name: str
+    layer: List[str]
     exclusion_rule: List[IDNameLayer]
     hierarchy: List[IDLayer]
-    location: Position
+    bounding_box: Optional[BoundingBox]
+    centre_point: Optional[Position]
+    location: Optional[Position]
 
 
 @dataclass(frozen=True)

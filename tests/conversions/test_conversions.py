@@ -12,7 +12,7 @@ class TestConvert(TestCaseUsingRealAPI):
         rotterdam_id = (
             "68faf65af1345067f11dc6723b8da32f00e304a6f33c000118fccd81947deb4e"
         )
-        rotterdam_name = Geographies().reference(rotterdam_id)[0]["name"]
+        rotterdam_name = Geographies().reference(rotterdam_id)["name"]
 
         result = convert_to_geography_ids([rotterdam_name])
 
