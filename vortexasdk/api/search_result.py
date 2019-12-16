@@ -10,13 +10,10 @@ from vortexasdk.api.product import Product
 from vortexasdk.api.vessel import Vessel
 from vortexasdk.api.corporation import Corporation
 
-import jsons
 import pandas as pd
 
 
 class Result:
-
-    DEFAULT_COLUMNS: List[str]
 
     def __init__(self, records: List, endpoint: Type[Any]):
         self.records = records
