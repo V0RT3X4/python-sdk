@@ -1,37 +1,63 @@
-import os
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from typing import List, Any, Type
-from functools import partial
-from multiprocessing import Pool
-
-from vortexasdk.api.geography import Geography
-from vortexasdk.api.product import Product
-from vortexasdk.api.vessel import Vessel
-from vortexasdk.api.corporation import Corporation
+from typing import List, Type, Sequence
 
 import pandas as pd
 
+from vortexasdk.api.return_types_config import (
+    default_columns,
+    permitted_return_types,
+    ReturnType,
+    flatten_method_dict,
+)
+from vortexasdk.utils import run_as_multiprocess
+
 
 class Result:
-
-    def __init__(self, records: List, endpoint: Type[Any]):
+    def __init__(self, records: List, return_type: Type[ReturnType]):
         self.records = records
-        self.endpoint = endpoint
+        self.return_type = return_type
+        self.default_columns = self._get_default_columns()
+
+    def to_list(self) -> List:
+        """Convert results set to list"""
+        data = run_as_multiprocess(self.return_type.from_dict, self.records)
+        return list(data)
+
+    def to_df(self, columns=None):
+        """Convert results set to pandas DataFrame"""
+        data = self._flatten_data()
+        columns = columns or self.default_columns
+
+        df = pd.DataFrame(data)
+        if columns == "all":
+            return df
+        else:
+            return df[columns]
+
+    def _get_default_columns(self) -> List[str]:
+        """Get default columns from config dict"""
+        return default_columns.get(self.return_type, None)
+
+    def _flatten_data(self) -> Sequence:
+        """Optionally flatten return type data"""
+        flatten_method = flatten_method_dict.get(self.return_type, None)
+        if flatten_method is None:
+            data = self.records
+        else:
+            data = run_as_multiprocess(flatten_method, self.records)
+        return data
 
     @property
-    def endpoint(self):
-        return self.__endpoint
+    def return_type(self):
+        return self.__return_type
 
-    @endpoint.setter
-    def endpoint(self, endpoint_value):
-        permitted_endpoints = {
-            Geography, Product, Vessel, Corporation
-        }
-        if endpoint_value not in permitted_endpoints:
-            raise ValueError(f"{endpoint_value} is not a permitted endpoint")
+    @return_type.setter
+    def return_type(self, return_type_value):
+        if return_type_value not in permitted_return_types:
+            raise ValueError(
+                f"{return_type_value} is not a permitted return_type"
+            )
         else:
-            self.__endpoint = endpoint_value
+            self.__return_type = return_type_value
 
     @property
     def default_columns(self):
@@ -41,36 +67,14 @@ class Result:
     def default_columns(self, default_col_values):
         self.__default_columns = default_col_values
 
-    def to_list(self) -> List:
-        """Convert results set to list"""
-        with Pool(os.cpu_count()) as pool:
-            return list(pool.map(self.endpoint.from_dict, self.records))
-
-    def to_df(self, columns=None):
-        df = pd.DataFrame(self.records)
-        columns = columns or self.default_columns
-
-        if columns == "all":
-            return df
-        else:
-            return df[columns]
-
-    @staticmethod
-    def _serialize_endpoint(data, data_class):
-        return jsons.loads(jsons.dumps(data), data_class)
-
     def __len__(self):
-        """Delegate to *_records*."""
         return len(self.records)
 
     def __str__(self):
-        """Delegate to *_records*."""
         return str(self.records)
 
     def __iter__(self):
-        """Delegate to *_records*."""
         return iter(self.records)
 
     def __getitem__(self, item):
-        """Delegate to *_records*."""
         return self.records.__getitem__(item)

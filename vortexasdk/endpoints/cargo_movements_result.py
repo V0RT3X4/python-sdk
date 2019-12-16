@@ -1,14 +1,8 @@
-import functools
-import os
-from multiprocessing.pool import Pool
 from typing import List
 
 import pandas as pd
 
 from vortexasdk.api import CargoMovement
-from vortexasdk.api.entity_flattening import (
-    convert_cargo_movement_to_flat_dict,
-)
 from vortexasdk.api.search_result import Result
 
 
@@ -16,16 +10,16 @@ class CargoMovementsResult(Result):
     """
     Container class holdings search results returns from the cargo movements endpoint.
 
-    This class has two methods, `to_list()`, and `to_df()`, allowing search results to be represented as a list of `CargoMovements`,
-     or as a `pd.DataFrame` , respectively.
+    This class has two methods, `to_list()`, and `to_df()`, allowing search results to be represented as a list of
+    `CargoMovements`, or as a `pd.DataFrame` , respectively.
     """
+
+    def __init__(self, records):
+        super().__init__(records=records, return_type=CargoMovement)
 
     def to_list(self) -> List[CargoMovement]:
         """Represent cargo movements as a list of `CargoMovementEntity`s."""
-        list_of_dicts = super().to_list()
-
-        with Pool(os.cpu_count()) as pool:
-            return list(pool.map(CargoMovement.from_dict, list_of_dicts))
+        return super().to_list()
 
     def to_df(self, columns=None) -> pd.DataFrame:
         """
@@ -533,29 +527,4 @@ class CargoMovementsResult(Result):
         ```
 
         """
-        if columns is None:
-            columns = DEFAULT_COLUMNS
-
-        flatten = functools.partial(
-            convert_cargo_movement_to_flat_dict, cols=columns
-        )
-
-        with Pool(os.cpu_count()) as pool:
-            records = pool.map(flatten, super().to_list())
-
-        if columns == "all":
-            return pd.DataFrame(data=records)
-        else:
-            return pd.DataFrame(data=records, columns=columns)
-
-
-DEFAULT_COLUMNS = [
-    "events.cargo_port_load_event.0.label",
-    "events.cargo_port_unload_event.0.label",
-    "product.group.label",
-    "product.grade.label",
-    "quantity",
-    "vessels.0.name",
-    "events.cargo_port_load_event.0.end_timestamp",
-    "events.cargo_port_unload_event.0.start_timestamp",
-]
+        return super().to_df(columns=columns)

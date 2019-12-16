@@ -1,5 +1,3 @@
-import os
-from multiprocessing import Pool
 from typing import List
 
 import pandas as pd
@@ -11,12 +9,12 @@ from vortexasdk.api.search_result import Result
 class CorporationsResult(Result):
     """Container class that holds the result obtained from calling the `Vessels` endpoint."""
 
+    def __init__(self, records):
+        super().__init__(records=records, return_type=Corporation)
+
     def to_list(self) -> List[Corporation]:
         """Represent vessels as a list."""
-        list_of_dicts = super().to_list()
-
-        with Pool(os.cpu_count()) as pool:
-            return list(pool.map(Corporation.from_dict, list_of_dicts))
+        return super().to_list()
 
     def to_df(self, columns=None) -> pd.DataFrame:
         """
@@ -31,13 +29,4 @@ class CorporationsResult(Result):
         `pd.DataFrame` of corporations.
 
         """
-        if columns is None:
-            columns = DEFAULT_COLUMNS
-
-        if columns == "all":
-            return pd.DataFrame(super().to_list())
-        else:
-            return pd.DataFrame(super().to_list(), columns=columns)
-
-
-DEFAULT_COLUMNS = ["id", "name", "corporate_entity_type"]
+        return super().to_df(columns=columns)
