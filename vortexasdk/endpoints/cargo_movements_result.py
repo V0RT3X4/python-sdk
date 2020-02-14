@@ -27,6 +27,26 @@ class CargoMovementsResult(Result):
         with Pool(os.cpu_count()) as pool:
             return list(pool.map(CargoMovement.from_dict, list_of_dicts))
 
+    def to_list_dacite(self) -> List[CargoMovement]:
+        """Represent cargo movements as a list of `CargoMovementEntity`s."""
+        list_of_dicts = super().to_list()
+
+        with Pool(os.cpu_count()) as pool:
+            return list(pool.map(CargoMovement.from_dict_dacite, list_of_dicts))
+
+    def to_list_serial(self) -> List[CargoMovement]:
+        """Represent cargo movements as a list of `CargoMovementEntity`s."""
+        list_of_dicts = super().to_list()
+
+        return list(map(CargoMovement.from_dict, list_of_dicts))
+
+    def to_list_serial_dacite(self) -> List[CargoMovement]:
+        """Represent cargo movements as a list of `CargoMovementEntity`s."""
+        list_of_dicts = super().to_list()
+
+        return list(map(CargoMovement.from_dict_dacite, list_of_dicts))
+
+
     def to_df(self, columns=None) -> pd.DataFrame:
         """
         Represent cargo movements as a `pd.DataFrame`.

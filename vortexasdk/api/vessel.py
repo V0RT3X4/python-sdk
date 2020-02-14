@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from vortexasdk.api.corporation import CorporateEntity
+from vortexasdk.api.corporation import CorporateEntity, CorporationType
 from vortexasdk.api.id import ID
 from vortexasdk.api.serdes import FromDictMixin
 from vortexasdk.api.shared_types import IDName, ISODate, Node, Tag
@@ -62,3 +62,6 @@ class VesselEntity(IDName):
     fixture_fulfilled: Optional[bool] = None
     end_timestamp: Optional[ISODate] = None
     fixture_id: Optional[str] = None
+
+    def get_corporation(self, entity: CorporationType) -> CorporateEntity:
+        return

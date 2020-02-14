@@ -3,9 +3,9 @@ from unittest import TestCase
 import jsons
 
 from vortexasdk.api.vessel import VesselEntity
-from vortexasdk.api.corporation import CorporateEntity
+from vortexasdk.api.corporation import CorporateEntity, CorporationType
 
-ce1 = CorporateEntity(
+_commercial_owner = CorporateEntity(
     id="cbd7dfe8a9fb0fa0ce3252ce7643437db6a32d0947a0c23d68dc5dea2f2d65d7",
     layer="commercial_owner",
     probability=1,
@@ -13,7 +13,7 @@ ce1 = CorporateEntity(
     source="external",
 )
 
-ce2 = CorporateEntity(
+_charterer = CorporateEntity(
     id="0bdf9acdc00ad52d9b8c44dad815087a89205a9c83f53ed89e029f7d15b9ac14",
     layer="charterer",
     probability=1,
@@ -28,7 +28,7 @@ ve = VesselEntity(
     dwt=298855,
     cubic_capacity=327310,
     vessel_class="vlcc_plus",
-    corporate_entities=[ce1, ce2],
+    corporate_entities=[_commercial_owner, _charterer],
     start_timestamp="2019-10-14T00:00:00+0000",
     fixture_id="cc4f364367db830da1d5d8ad89b02a7dc6f207402cd907a19c9d713e1a70b0ed",
     fixture_fulfilled=False,
@@ -45,3 +45,7 @@ class TestVesselEntity(TestCase):
             deserialized = jsons.loads(serialized, VesselEntity)
 
             assert ve == deserialized
+
+    def test_get_corporation(self):
+
+        assert ve.get_corporation(CorporationType.CHARTERER) == _charterer

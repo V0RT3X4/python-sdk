@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 from typing import List
 
 from vortexasdk.api.serdes import FromDictMixin
@@ -24,3 +25,8 @@ class CorporateEntity(EntityWithProbability):
 
 
     """
+#
+#
+# class CorporationType(Enum):
+#     CHARTERER = "charterer"
+#     COMMERCIAL_OWNER = "commercial_owner"
