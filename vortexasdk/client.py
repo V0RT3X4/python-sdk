@@ -44,6 +44,8 @@ class VortexaClient(AbstractVortexaClient):
         probe_response = _send_post_request(url, payload, size=1, offset=0)
         total = self._calculate_total(probe_response)
 
+        return probe_response["data"]
+
         if total > self._MAX_ALLOWED_TOTAL:
             raise Exception(
                 f"Attempting to query too many records at once. Attempted records: {total}, Max allowed records: {self._MAX_ALLOWED_TOTAL} . "

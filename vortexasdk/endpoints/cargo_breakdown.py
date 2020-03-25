@@ -1,27 +1,35 @@
-"""Time Series Endpoint."""
+"""Cargo Breakdown Endpoint."""
 from datetime import datetime
 from typing import List, Union
 
 from vortexasdk.api.shared_types import to_ISODate
-from vortexasdk.endpoints.endpoints import CARGO_TIMESERIES_RESOURCE
-from vortexasdk.endpoints.keyvaluecount_result import KeyValueCountResult
+from vortexasdk.endpoints.endpoints import CARGO_BREAKDOWN_RESOURCE
 from vortexasdk.operations import Search
 from vortexasdk.utils import convert_to_list
+from vortexasdk.endpoints.keyvaluecount_result import KeyValueCountResult
 
 
-class CargoTimeSeries(Search):
+class CargoBreakdown(Search):
     _MAX_PAGE_RESULT_SIZE = 500
 
     def __init__(self):
-        Search.__init__(self, CARGO_TIMESERIES_RESOURCE)
+        # Search.__init__(self, "/breakdown/vessel-class")
+        # Search.__init__(self, "/breakdown/product")
+        # Search.__init__(self, "/breakdown/vessel-id")
+        # Search.__init__(self, "/breakdown/charterer")
+        # Search.__init__(self, "/breakdown/parent-product")
+        Search.__init__(self, "/breakdown/origin")
 
     # noinspection PyUnresolvedReferences
     def search(
         self,
         filter_activity: str,
-        timeseries_activity: str = None,
-        timeseries_frequency: str = "day",
-        timeseries_unit: str = "b",
+
+        breakdown_unit: str = "b",
+        breakdown_size: int = 10,
+        breakdown_unit_average_basis: str = None,
+        breakdown_include_reference: bool = False,
+
         filter_time_min: datetime = datetime(2019, 10, 1, 0),
         filter_time_max: datetime = datetime(2019, 10, 1, 1),
         filter_charterers: Union[str, List[str]] = None,
@@ -37,6 +45,35 @@ class CargoTimeSeries(Search):
         timeseries_activity_time_span_min: int = None,
         timeseries_activity_time_span_max: int = None,
     ) -> KeyValueCountResult:
+        params = {
+            "filter_activity": filter_activity,
+            "filter_time_min": to_ISODate(filter_time_min),
+            "filter_time_max": to_ISODate(filter_time_max),
+            "timeseries_activity_time_span_min": timeseries_activity_time_span_min,
+            "timeseries_activity_time_span_max": timeseries_activity_time_span_max,
+            "filter_charterers": convert_to_list(filter_charterers),
+            "filter_owners": convert_to_list(filter_owners),
+            "filter_products": convert_to_list(filter_products),
+            "filter_vessels": convert_to_list(filter_vessels),
+            "filter_destinations": convert_to_list(filter_destinations),
+            "filter_origins": convert_to_list(filter_origins),
+            "filter_storage_locations": convert_to_list(
+                filter_storage_locations
+            ),
+            "filter_ship_to_ship_locations": convert_to_list(
+                filter_ship_to_ship_locations
+            ),
+            "filter_waypoints": convert_to_list(filter_waypoints),
+            "disable_geographic_exclusion_rules": disable_geographic_exclusion_rules,
+
+            "breakdown_unit": breakdown_unit,
+            "breakdown_geography": "country",
+            "breakdown_size": breakdown_size,
+            "breakdown_unit_average_basis": breakdown_unit_average_basis or filter_activity,
+            "breakdown_include_reference": breakdown_include_reference,
+
+            "size": self._MAX_PAGE_RESULT_SIZE,
+        }
         """
 
         Find Aggregate flows between regions, for various products, for various vessels, or various corporations.
@@ -148,30 +185,5 @@ class CargoTimeSeries(Search):
 
 
         """
-        params = {
-            "filter_activity": filter_activity,
-            "filter_time_min": to_ISODate(filter_time_min),
-            "filter_time_max": to_ISODate(filter_time_max),
-            "timeseries_activity_time_span_min": timeseries_activity_time_span_min,
-            "timeseries_activity_time_span_max": timeseries_activity_time_span_max,
-            "filter_charterers": convert_to_list(filter_charterers),
-            "filter_owners": convert_to_list(filter_owners),
-            "filter_products": convert_to_list(filter_products),
-            "filter_vessels": convert_to_list(filter_vessels),
-            "filter_destinations": convert_to_list(filter_destinations),
-            "filter_origins": convert_to_list(filter_origins),
-            "filter_storage_locations": convert_to_list(
-                filter_storage_locations
-            ),
-            "filter_ship_to_ship_locations": convert_to_list(
-                filter_ship_to_ship_locations
-            ),
-            "filter_waypoints": convert_to_list(filter_waypoints),
-            "disable_geographic_exclusion_rules": disable_geographic_exclusion_rules,
-            "timeseries_frequency": timeseries_frequency,
-            "timeseries_unit": timeseries_unit,
-            "timeseries_activity": timeseries_activity or filter_activity,
-            "size": self._MAX_PAGE_RESULT_SIZE,
-        }
 
         return KeyValueCountResult(super().search(**params))
