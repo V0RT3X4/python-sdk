@@ -21,14 +21,34 @@ class TestVesselMovementsReal(TestCaseUsingRealAPI):
         assert len(v) > 10
 
     def test_search_vessel_status(self):
-        v = VesselMovements().search(
-            filter_time_min=datetime(2019, 10, 1),
-            filter_time_max=datetime(2019, 10, 15),
-            filter_vessel_classes=["vlcc"],
-            filter_vessel_status="vessel_status_ballast",
+
+        cols = [
+            "vessel_movement_id",
+            "vessel.name",
+            "start_timestamp",
+            "end_timestamp",
+            "origin.location.country.id",
+            "origin.location.country.label",
+            "destination.location.country.id",
+            "destination.location.country.label",
+            "cargoes.0.product.group.label",
+            "vessel.status",
+        ]
+
+        df = (
+            VesselMovements()
+            .search(
+                filter_time_min=datetime(2019, 10, 1),
+                filter_time_max=datetime(2019, 10, 3),
+                filter_vessel_classes=["vlcc"],
+                filter_vessel_status="vessel_status_ballast",
+            )
+            .to_df(columns=cols)
         )
 
-        assert len(v) > 50
+        dfb = df.loc[df["vessel.status"] != "vessel_status_ballast"]
+
+        assert dfb.empty
 
     def test_exclusion_filter(self):
         meg = [
