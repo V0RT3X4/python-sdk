@@ -38,6 +38,9 @@ generate:
       - vortexasdk.api.cargo_movement++
   - entities/vessel_movement.md:
       - vortexasdk.api.vessel_movement++
+  - endpoints/speed_breakdown.md:
+      - vortexasdk.endpoints.speed++
+
 pages:
   - Home: index.md << README.md
   - Endpoints:

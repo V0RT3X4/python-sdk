@@ -9,5 +9,7 @@ VESSELS_REFERENCE = "/reference/vessels"
 PRODUCTS_REFERENCE = "/reference/products"
 CORPORATIONS_REFERENCE = "/reference/charterers"
 
+SPEED_BREAKDOWN = "/vessel-journey/breakdown/speed"
+
 API_FQDN = "https://api.vortexa.com"
 API_URL = f"{API_FQDN}/v5"
