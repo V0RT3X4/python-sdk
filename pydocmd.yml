@@ -44,6 +44,8 @@ generate:
   - endpoints/eia_forecasts.md:
       - vortexasdk.endpoints.eia_forecasts++
       - vortexasdk.endpoints.eia_forecasts_result++
+  - config.md:
+      - vortexasdk.config.Config++
 
 pages:
   - Home: index.md << README.md
@@ -65,7 +67,7 @@ pages:
       Product: entities/product.md
       Vessel: entities/vessel.md
       Vessel Movement: entities/vessel_movement.md
-  - Config: config.md << docs/config/config.md
+  - Config: config.md
   - FAQ:
       Setup: faq_setup.md << docs/faq_setup.md
       General: faq.md << docs/faq.md
