@@ -26,10 +26,9 @@ setuptools.setup(
     python_requires=">=3.7",
     install_requires=[
         "pandas>=0.25.2",
-        "requests==2.22.0",
+        "requests==2.25.1",
         "jsons==1.0.0",
         "flatten-dict==0.2.0",
-        "tabulate==0.8.5",
         "tqdm==4.38.0",
     ],
     extras_require={
@@ -42,6 +41,7 @@ setuptools.setup(
             "flake8==3.7.9",
             "pydoc-markdown==2.0.5",
             "six==1.12.0",
+            "tabulate==0.8.7",
             "xlrd==1.2.0"
         ],
         "deploy": [
