@@ -29,7 +29,6 @@ setuptools.setup(
         "requests==2.22.0",
         "jsons==1.0.0",
         "flatten-dict==0.2.0",
-        "tabulate==0.8.5",
         "tqdm==4.38.0",
     ],
     extras_require={
@@ -39,9 +38,10 @@ setuptools.setup(
             "mypy==0.770",
             "pytest==5.2.4",
             "pre-commit==1.20.0",
-            "flake8==3.7.9",
+            "flake8==3.8.4",
             "pydoc-markdown==2.0.5",
             "six==1.12.0",
+            "tabulate==0.8.7",
             "xlrd==1.2.0"
         ],
         "deploy": [
